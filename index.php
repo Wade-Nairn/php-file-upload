@@ -14,13 +14,14 @@ require_once 'url.lib.php';
 
 # if any files were uploaded....
 if($_FILES){
-	#move the files into the uploads folder
-	$tmp = $_FILES['file']['tmp_name'][0];
-	$filename = $_FILES['file']['name'][0];
-	move_uploaded_file($tmp, 'uploads/'.$filename);
+	
+	$files = Upload::to_folder('uploads/');
 
-	# redirect to the new file
-	URL::redirect('uploads/'.$filename);
+	if($files[0]['error message'] == false){
+		URL::redirect($files[0]['filepath']);
+	}else{
+		echo $files[0]['error message'];
+	}
 }
 
 # views (after tag)
